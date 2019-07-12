@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/packages
+/Portfolio/App_Data
+/Portfolio/bin
+/Portfolio/obj
+/Portfolio/Properties
+/Portfolio/Portfolio.csproj.user

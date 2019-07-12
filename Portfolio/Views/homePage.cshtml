@@ -1,0 +1,207 @@
+﻿@using Umbraco.Web.Models
+@inherits Umbraco.Web.Mvc.UmbracoViewPage
+@{
+    Layout = "master.cshtml";
+    var homeNode = Umbraco.ContentAtRoot().FirstOrDefault();
+    var projectNode = homeNode.Children.FirstOrDefault(p => p.IsDocumentType("projectContainer"));
+    var webConfigNode = Umbraco.ContentAtRoot().FirstOrDefault(w => w.IsDocumentType("websiteConfiguration"));
+    var globalSettingNode = webConfigNode.Children.FirstOrDefault(g => g.IsDocumentType("globalSettings"));
+}
+
+<!--================Home Banner Area =================-->
+<section class="home_banner_area">
+    <div class="banner_inner">
+        <div class="container">
+            <div class="banner_content">
+                <h5>@Model.Value("bannerSubtitle")</h5>
+                <h2>@Model.Value("bannerTitle")</h2>
+                @Model.Value("bannerDescription")
+                @if (Model.Value("bannerButtonLink1") != null)
+                {
+                    Link btnLink1 = Model.Value<Link>("bannerButtonLink1");
+                    <a class="banner_btn" href="@btnLink1.Url" target="@btnLink1.Target">@Model.Value("bannerButtonText1")</a>
+                }
+                @if (Model.Value("bannerButtonLink2") != null)
+                {
+                    Link btnLink2 = Model.Value<Link>("bannerButtonLink2");
+                    <a class="banner_btn2" href="@btnLink2.Url" target="@btnLink2.Target">@Model.Value("bannerButtonText2")</a>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="side_menu">
+        <a class="logo" href="/">
+            @if (globalSettingNode.Value("sideNavigationLogo") != null)
+            {
+                IPublishedContent logo = globalSettingNode.Value<IPublishedContent>("sideNavigationLogo");
+                <img src="@logo.Url" alt="@logo.Name" height="25" width="100">
+            }
+        </a>
+        @*Google Search Console API Possibly*@
+        @*<div class="input-group">
+            <input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button"><i class="fa fa-search"></i></button>
+            </div>
+        </div>*@      
+        <ul class="list menu_right">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about-us.html">About Us</a></li>
+            <li>
+                <a href="#">Pages</a>
+                <ul class="list">
+                    <li><a href="portfolio.html">Portfolio</a></li>
+                    <li><a href="portfolio-details.html">Portfolio Details</a></li>
+                    <li><a href="service.html">Services</a></li>
+                    <li><a href="elements.html">Elements</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Blog</a>
+                <ul class="list">
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="single-blog.html">Blog Details</a></li>
+                </ul>
+            </li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <ul class="list social">
+            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+            <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+            <li><a href="#"><i class="fa fa-behance"></i></a></li>
+        </ul>
+    </div>
+</section>
+<!--================End Home Banner Area =================-->
+<!--================Feature Area =================-->
+<section class="feature_area p_120">
+    <div class="container">
+        <div class="main_title">
+            <h2>@Model.Value("technicalSkillTitle")</h2>
+            @Model.Value("technicalSkillDescription")
+        </div>  
+        <div class="feature_inner row">
+            @{
+                var skillBlocks = Model.Value<IEnumerable<IPublishedElement>>("technicalSkillCollection");
+                foreach (var skill in skillBlocks)
+                {
+                    IPublishedContent icon = skill.Value<IPublishedContent>("icon");
+                    <div class="col-lg-4">
+                        <div class="feature_item">
+                            <h4><img src="@icon.Url" alt="@icon.Name" height="40" width="60">@skill.Value("title")</h4>
+                            <p>@skill.Value("description")</p>
+                        </div>
+                    </div>
+                }
+            }   
+        </div>
+    </div>
+</section>
+<!--================End Feature Area =================-->
+<!--================Process Area =================-->
+<section class="process_area">
+    <div class="left_side">
+        <div class="process_box">
+            <div class="process_inner">
+                <h4>Other Skills</h4>
+                <div class="accordion" id="accordionExample">
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Project Management
+                                <i class="lnr lnr-arrow-right"></i>
+                                <i class="lnr lnr-arrow-left"></i>
+                            </button>
+                        </div>
+                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                            <div class="card-body">
+                                From contacting clients, gathering requests to drafting time estimates & quote and Statement of Work (SOW), etc...
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingTwo">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Project Coordination 
+                                <i class="lnr lnr-arrow-right"></i>
+                                <i class="lnr lnr-arrow-left"></i>
+                            </button>
+                        </div>
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                            <div class="card-body">
+                                Collecting clients' request, analyze the needs of clients and distribute to the best and most suitable candidate developer. Keep track of projects or tickets and report & give feedback to clients.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingThree">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                Customer Support & Ticketing System Admin
+                                <i class="lnr lnr-arrow-right"></i>
+                                <i class="lnr lnr-arrow-left"></i>
+                            </button>
+                        </div>
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                            <div class="card-body">
+                                I am the Support Desk Lead at my current job. I can precisely get what client truly want (this could be different as what they say they want sometimes), discuss with the team and provide them with the best solution.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right_side">
+        <img src="img/process-1.jpg" alt="">
+    </div>
+</section>
+<!--================End Process Area =================-->
+<!--================Projects Area =================-->
+<section class="projects_area p_120">
+    <div class="container">
+        <div class="projects_fillter row">
+            <div class="col-lg-7">
+                <div class="main_title">
+                    <h2>@Model.Value("recentProjectTitle")</h2>
+                    @Model.Value("recentProjectDesciption")
+                </div>
+            </div>
+            @if (Model.HasValue("viewAllLink") && Model.Value("viewAllLink") != null)
+            {
+                Link link = Model.Value<Link>("viewAllLink");
+                <div class="col-lg-5">
+                    <ul class="filter list">
+                        <li class="active"><a href="@link.Url">@link.Name</a></li>
+                    </ul>
+                </div>
+            }
+        </div>
+        <div class="projects_inner row">
+            @if (projectNode.Children.Any())
+            {
+                foreach (var project in projectNode.Children)
+                {
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="team_item">
+                            <div class="team_img">
+                                @if (project.Value("thumbnail") != null)
+                                {
+                                    IPublishedContent img = project.Value<IPublishedContent>("thumbnail");
+                                    <a href="@project.Url"><img class="img-fluid" src="@img.Url" alt="@img.Name" height="300" width="300"></a>
+                                }
+                            </div>
+                            <div class="team_name">
+                                <a href="@project.Url"><h4>@project.Value("title")</h4></a>
+                                <p>@project.Value("subtitle")</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</section>
+<!--================End Projects Area =================-->
+
+
